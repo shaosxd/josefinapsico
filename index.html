@@ -25,6 +25,11 @@ body{
     padding:20px;
 }
 
+/* Identificador para que JavaScript detecte los bordes del cuadrado */
+#cajaPrincipal {
+    position: relative;
+}
+
 .contenedor{
     background:white;
     padding:40px;
@@ -34,7 +39,6 @@ body{
     width:100%;
     box-shadow:0 20px 50px rgba(0,0,0,0.2);
     z-index:10;
-    /* Animación de entrada */
     animation: aparecer 0.8s ease-out forwards;
 }
 
@@ -62,12 +66,12 @@ p{
     align-items: center;
     gap:25px;
     margin-top:35px;
-    min-height: 80px; /* Evita que el contenedor salte cuando el botón crece */
+    min-height: 80px;
 }
 
 button{
     border:none;
-    border-radius:50px; /* Bordes más redondeados */
+    border-radius:50px;
     padding:15px 35px;
     font-size:1.2rem;
     font-weight: 600;
@@ -82,8 +86,8 @@ button:hover {
 }
 
 #si{
-    background:#ff4d6d; /* Cambiado a un rosa fuerte para que combine mejor */
-    animation: latido 1.5s infinite; /* Llamador visual */
+    background:#ff4d6d;
+    animation: latido 1.5s infinite;
 }
 
 #si:hover {
@@ -97,8 +101,9 @@ button:hover {
 }
 
 #no{
-    background:#6c757d; /* Color más neutro para el "No" */
-    position: relative; /* Preparado para cuando se vuelva fixed */
+    background:#6c757d;
+    position: relative;
+    z-index: 1000; /* Asegura que quede por encima de los corazones */
 }
 
 .corazon{
@@ -124,35 +129,23 @@ button:hover {
     position:fixed;
     inset:0;
     background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    display:none;
+    display:none; /* Se cambia a flex con JS */
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    text-align:center;
-    color:white;
     padding:20px;
     z-index:999;
     animation: aparecer 0.5s ease-out forwards;
 }
 
-#pantallaFinal h1{
-    color:white;
-    font-size:3.5rem;
-    margin-bottom:20px;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-}
-
-#pantallaFinal p{
-    color:white;
-    font-size:1.5rem;
-    margin:8px 0;
-    font-weight: 600;
+/* Ajustes mínimos para que el título de la pantalla final resalte más adentro del cuadro blanco */
+#pantallaFinal h1 {
+    font-size: 2.8rem;
 }
 </style>
 </head>
 <body>
 
-<div class="contenedor">
+<div class="contenedor" id="cajaPrincipal">
     <h1>❤️ ¿Querés ir al cine conmigo a ver Obsesión? 🍿</h1>
 
     <p>
@@ -168,16 +161,18 @@ button:hover {
 </div>
 
 <div id="pantallaFinal">
-    <h1>🥰 ¡PLAN CONFIRMADO!</h1>
-    <p>❤️ Te espero en mi casa a las 6:00 PM ❤️</p>
-    <p>🍿 Después vamos a ver Obsesión juntos 🍿</p>
-    <p>✨ Sabía que ibas a decir que sí ✨</p>
+    <div class="contenedor">
+        <h1>🥰 ¡PLAN CONFIRMADO!</h1>
+        <p>❤️ Te espero en mi casa a las 6:00 PM ❤️</p>
+        <p>🍿 Después vamos a ver Obsesión juntos 🍿</p>
+        <p>✨ Sabía que ibas a decir que sí ✨</p>
+    </div>
 </div>
 
 <script>
 const botonNo = document.getElementById("no");
 const botonSi = document.getElementById("si");
-// const musica = document.getElementById("musicaFondo"); // Descomentar si usás música
+const cajaPrincipal = document.getElementById("cajaPrincipal");
 
 let intentos = 0;
 let escala = 1;
@@ -187,21 +182,41 @@ function escapar(e){
 
     intentos++;
 
-    // Calculamos los bordes seguros para que el botón no se vaya fuera de la pantalla
-    const paddingSeguro = 20;
-    const ancho = window.innerWidth - botonNo.offsetWidth - paddingSeguro;
-    const alto = window.innerHeight - botonNo.offsetHeight - paddingSeguro;
+    // Límites de la ventana y dimensiones del botón
+    const btnAncho = botonNo.offsetWidth;
+    const btnAlto = botonNo.offsetHeight;
+    const anchoVentana = window.innerWidth;
+    const altoVentana = window.innerHeight;
 
-    const x = Math.max(paddingSeguro, Math.random() * ancho);
-    const y = Math.max(paddingSeguro, Math.random() * alto);
+    // Detectamos dónde está ubicado el cuadrado del centro
+    const rectCaja = cajaPrincipal.getBoundingClientRect();
+    const paddingCaja = 25; // Distancia mínima para que no pise el borde del cuadrado
 
-    // Cambiamos a fixed recién en el primer escape para que el layout inicial no se rompa
+    let nuevoX, nuevoY;
+    let solapa = true;
+    let intentosLoop = 0;
+
+    // Busca un espacio libre (máximo 100 intentos por si la pantalla es muy chica)
+    while (solapa && intentosLoop < 100) {
+        // Genera coordenadas aleatorias, pero respeta 20px de margen respecto a la pantalla
+        nuevoX = 20 + Math.random() * (anchoVentana - btnAncho - 40);
+        nuevoY = 20 + Math.random() * (altoVentana - btnAlto - 40);
+
+        // Verifica si esas coordenadas chocan con el cuadrado blanco
+        const chocaX = (nuevoX + btnAncho > rectCaja.left - paddingCaja) && (nuevoX < rectCaja.right + paddingCaja);
+        const chocaY = (nuevoY + btnAlto > rectCaja.top - paddingCaja) && (nuevoY < rectCaja.bottom + paddingCaja);
+
+        if (!(chocaX && chocaY)) {
+            solapa = false; // Encontró un espacio válido
+        }
+        intentosLoop++;
+    }
+
     botonNo.style.position = "fixed";
-    botonNo.style.left = x + "px";
-    botonNo.style.top = y + "px";
-    botonNo.style.transition = "all 0.1s ease"; // Hace que el movimiento sea un poco más suave
+    botonNo.style.left = nuevoX + "px";
+    botonNo.style.top = nuevoY + "px";
+    botonNo.style.transition = "all 0.2s ease";
 
-    // El botón "Sí" crece pero sin la animación de latido para que no se superpongan transformaciones
     botonSi.style.animation = "none";
     escala += 0.15;
     botonSi.style.transform = `scale(${escala})`;
@@ -221,12 +236,9 @@ botonNo.addEventListener("click", escapar);
 
 botonSi.addEventListener("click", () => {
     document.getElementById("pantallaFinal").style.display = "flex";
-    
-    // Si descomentás el audio arriba, descomentá esto para que suene al decir que sí
-    // musica.play().catch(error => console.log("El navegador bloqueó el autoplay"));
 
     for(let i = 0; i < 150; i++){
-        setTimeout(crearCorazon, i * 30); // Lluvia de corazones más fluida
+        setTimeout(crearCorazon, i * 30);
     }
 });
 
@@ -247,7 +259,6 @@ function crearCorazon(){
     }, 6000);
 }
 
-// Corazones de fondo constantes
 setInterval(crearCorazon, 800);
 </script>
 
