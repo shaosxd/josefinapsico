@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>❤️ Una pregunta importante ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{
@@ -20,26 +20,45 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    /* Fondo con luces de gradiente animadas */
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ff758c, #ff7eb3);
+    background-size: 400% 400%;
+    animation: fondoLuces 10s ease infinite;
     overflow:hidden;
     padding:20px;
 }
 
-/* El cuadrado blanco ahora es la "jaula" del botón */
+@keyframes fondoLuces {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 #cajaPrincipal {
-    position: relative; 
+    position: relative;
     z-index: 10;
 }
 
+/* EL CUADRADO CON LUCES DE NEÓN */
 .contenedor{
-    background:white;
-    padding:40px;
-    border-radius:25px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 40px 30px;
+    border-radius:30px;
     text-align:center;
-    max-width:600px;
+    max-width:550px;
     width:100%;
-    box-shadow:0 20px 50px rgba(0,0,0,0.2);
-    animation: aparecer 0.8s ease-out forwards;
+    /* Aura de luces dinámicas alrededor del cuadro */
+    box-shadow: 0 0 20px rgba(255, 77, 109, 0.4), 
+                0 0 40px rgba(255, 117, 140, 0.2), 
+                0 20px 50px rgba(0,0,0,0.15);
+    animation: aparecer 0.8s ease-out forwards, lucesAura 4s linear infinite alternate;
+}
+
+/* Animación del aura de luces del contenedor */
+@keyframes lucesAura {
+    0% { box-shadow: 0 0 20px #ff4d6d, 0 0 40px rgba(255,77,109,0.3), 0 20px 50px rgba(0,0,0,0.15); }
+    50% { box-shadow: 0 0 30px #ffbe0b, 0 0 60px rgba(255,190,11,0.3), 0 20px 50px rgba(0,0,0,0.15); }
+    100% { box-shadow: 0 0 20px #ff007f, 0 0 40px rgba(255,0,127,0.3), 0 20px 50px rgba(0,0,0,0.15); }
 }
 
 @keyframes aparecer {
@@ -47,17 +66,58 @@ body{
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* GUIRNALDA DE LUCES LED */
+.guirnalda-luces {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.led {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    position: relative;
+}
+
+/* Configuración de parpadeo de las luces individuales */
+.led:nth-child(4n+1) { animation: ledRosa 0.6s infinite alternate; }
+.led:nth-child(4n+2) { animation: ledAmarillo 0.8s infinite alternate 0.2s; }
+.led:nth-child(4n+3) { animation: ledCian 0.5s infinite alternate 0.4s; }
+.led:nth-child(4n+4) { animation: ledMorado 0.7s infinite alternate 0.1s; }
+
+@keyframes ledRosa {
+    0% { background: #ff4d6d; box-shadow: 0 0 5px #ff4d6d, 0 0 15px #ff4d6d; }
+    100% { background: #ffb3c1; box-shadow: 0 0 1px #ffb3c1; }
+}
+@keyframes ledAmarillo {
+    0% { background: #ffbe0b; box-shadow: 0 0 5px #ffbe0b, 0 0 15px #ffbe0b; }
+    100% { background: #fff3b0; box-shadow: 0 0 1px #fff3b0; }
+}
+@keyframes ledCian {
+    0% { background: #00f5d4; box-shadow: 0 0 5px #00f5d4, 0 0 15px #00f5d4; }
+    100% { background: #ccfffa; box-shadow: 0 0 1px #ccfffa; }
+}
+@keyframes ledMorado {
+    0% { background: #9b5de5; box-shadow: 0 0 5px #9b5de5, 0 0 15px #9b5de5; }
+    100% { background: #e2cfea; box-shadow: 0 0 1px #e2cfea; }
+}
+
 h1{
     color:#ff4d6d;
     margin-bottom:20px;
-    font-size:2.2rem;
-    font-weight: 600;
+    font-size:2.1rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 p{
     color:#555;
-    font-size:1.2rem;
+    font-size:1.15rem;
     line-height:1.6;
+    font-weight: 400;
 }
 
 .botones{
@@ -66,46 +126,65 @@ p{
     align-items: center;
     gap:25px;
     margin-top:35px;
-    min-height: 80px;
+    min-height: 90px;
 }
 
+/* BOTONES CON EFECTO DE LUZ ULTRA-PRO */
 button{
     border:none;
     border-radius:50px;
-    padding:15px 35px;
-    font-size:1.2rem;
+    padding:16px 38px;
+    font-size:1.25rem;
     font-weight: 600;
     cursor:pointer;
     color:white;
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden; /* Corta el reflejo láser para que no se salga del botón */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-button:hover {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+/* El destello de luz láser (Efecto Shimmer) */
+button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    transform: rotate(25deg);
+    animation: rayoLaser 3s infinite linear;
+}
+
+@keyframes rayoLaser {
+    0% { left: -60%; }
+    100% { left: 140%; }
 }
 
 #si{
-    background:#ff4d6d;
-    animation: latido 1.5s infinite;
+    background: linear-gradient(45deg, #ff4d6d, #ff758c);
+    animation: latidoLuces 1.5s infinite;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
 }
 
 #si:hover {
-    background: #ff3355;
+    background: linear-gradient(45deg, #ff2a55, #ff5277);
+    box-shadow: 0 0 25px rgba(255, 42, 85, 0.7);
 }
 
-@keyframes latido {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+@keyframes latidoLuces {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 77, 109, 0.4); }
+    50% { transform: scale(1.06); box-shadow: 0 0 25px rgba(255, 77, 109, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 77, 109, 0.4); }
 }
 
 #no{
-    background:#6c757d;
-    position: relative;
-    z-index: 1000;
+    background: linear-gradient(45deg, #434343, #1a1a1a);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
+/* EFECTOS FINALES */
 .corazon{
     position:fixed;
     bottom:-50px;
@@ -115,36 +194,46 @@ button:hover {
 }
 
 @keyframes subir{
-    from{
-        transform:translateY(0) rotate(0deg);
-        opacity:1;
-    }
-    to{
-        transform:translateY(-120vh) rotate(360deg);
-        opacity:0;
-    }
+    from{ transform:translateY(0) rotate(0deg); opacity:1; }
+    to{ transform:translateY(-120vh) rotate(360deg); opacity:0; }
 }
 
 #pantallaFinal{
     position:fixed;
     inset:0;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
     display:none;
     justify-content:center;
     align-items:center;
     padding:20px;
     z-index:999;
-    animation: aparecer 0.5s ease-out forwards;
 }
 
 #pantallaFinal h1 {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
+    animation: pulsoTexto 1s infinite alternate;
+}
+
+@keyframes pulsoTexto {
+    0% { text-shadow: 0 0 10px rgba(255,77,109,0.5); }
+    100% { text-shadow: 0 0 25px #fff, 0 0 40px #ff4d6d; }
 }
 </style>
 </head>
 <body>
 
 <div class="contenedor" id="cajaPrincipal">
+    <div class="guirnalda-luces">
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+        <div class="led"></div>
+    </div>
+
     <h1>❤️ ¿Querés ir al cine conmigo a ver Obsesión? 🍿</h1>
 
     <p>
@@ -161,6 +250,16 @@ button:hover {
 
 <div id="pantallaFinal">
     <div class="contenedor">
+        <div class="guirnalda-luces">
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+            <div class="led"></div>
+        </div>
         <h1>🥰 ¡PLAN CONFIRMADO!</h1>
         <p>❤️ Te espero en mi casa a las 6:00 PM ❤️</p>
         <p>🍿 Después vamos a ver Obsesión juntos 🍿</p>
@@ -181,26 +280,28 @@ function escapar(e){
 
     intentos++;
 
-    // Tomamos las medidas del cuadrado blanco y del botón
+    // Medidas precisas de la "jaula" (cuadrado blanco) y del botón
     const anchoCaja = cajaPrincipal.offsetWidth;
     const altoCaja = cajaPrincipal.offsetHeight;
     const anchoBtn = botonNo.offsetWidth;
     const altoBtn = botonNo.offsetHeight;
 
-    // Calculamos un punto al azar DENTRO del cuadrado blanco
-    // Restamos el tamaño del botón y dejamos 15px de margen para que no muerda el borde
-    const maxX = anchoCaja - anchoBtn - 15;
-    const maxY = altoCaja - altoBtn - 15;
+    // Límites máximos seguros restando el tamaño del botón y un margen de 20px
+    const maxX = anchoCaja - anchoBtn - 20;
+    const maxY = altoCaja - altoBtn - 20;
 
-    const nuevoX = 15 + Math.random() * (maxX - 15);
-    const nuevoY = 15 + Math.random() * (maxY - 15);
+    // Genera coordenadas aleatorias internas perfectas
+    const nuevoX = 20 + Math.random() * (maxX - 20);
+    const nuevoY = 20 + Math.random() * (maxY - 20);
 
-    // Lo pasamos a absolute para que se mueva en relación al cuadrado, no a la pantalla
+    // Se posiciona de forma absoluta respecto al cuadro contenedor
     botonNo.style.position = "absolute";
     botonNo.style.left = nuevoX + "px";
     botonNo.style.top = nuevoY + "px";
-    botonNo.style.transition = "all 0.2s ease";
+    botonNo.style.zIndex = "1000";
+    botonNo.style.transition = "all 0.15s ease-out"; // Un toque más rápido para que sea desafiante
 
+    // El botón SÍ crece de tamaño
     botonSi.style.animation = "none";
     escala += 0.15;
     botonSi.style.transform = `scale(${escala})`;
@@ -214,36 +315,39 @@ function escapar(e){
     }
 }
 
+// Eventos para atrapar cualquier intento de click o roce
 botonNo.addEventListener("mouseover", escapar);
 botonNo.addEventListener("touchstart", escapar);
 botonNo.addEventListener("click", escapar);
 
+// Acción ganadora
 botonSi.addEventListener("click", () => {
     document.getElementById("pantallaFinal").style.display = "flex";
 
+    // Explosión masiva inicial de corazones flotantes
     for(let i = 0; i < 150; i++){
-        setTimeout(crearCorazon, i * 30);
+        setTimeout(crearCorazon, i * 25);
     }
 });
 
 function crearCorazon(){
     const corazon = document.createElement("div");
-
     corazon.className = "corazon";
     corazon.innerHTML = "❤️";
 
     corazon.style.left = Math.random() * 100 + "vw";
     corazon.style.fontSize = (Math.random() * 30 + 20) + "px";
-    corazon.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    corazon.style.animationDuration = (Math.random() * 2 + 2) + "s";
 
     document.body.appendChild(corazon);
 
     setTimeout(() => {
         corazon.remove();
-    }, 6000);
+    }, 5000);
 }
 
-setInterval(crearCorazon, 800);
+// Lluvia constante de corazones ambiente de fondo
+setInterval(crearCorazon, 600);
 </script>
 
 </body>
