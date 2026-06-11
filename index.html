@@ -36,15 +36,16 @@ body{
 #cajaPrincipal {
     position: relative;
     z-index: 10;
+    /* Arranca oculta por si es celular, el JS decide si la muestra */
+    display: none; 
 }
 
-/* EL CUADRADO: Más ancho y con más espacio adentro */
 .contenedor{
     background: rgba(255, 255, 255, 0.96);
-    padding: 50px 40px; /* Agrandado */
+    padding: 50px 40px; 
     border-radius:30px;
     text-align:center;
-    max-width:700px; /* Agrandado */
+    max-width:700px; 
     width:100%;
     box-shadow: 0 0 20px rgba(255, 77, 109, 0.4), 
                 0 0 40px rgba(255, 117, 140, 0.2), 
@@ -63,17 +64,16 @@ body{
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* GUIRNALDA DE LUCES: Focos más grandes */
 .guirnalda-luces {
     display: flex;
     justify-content: center;
-    gap: 18px; /* Agrandado */
-    margin-bottom: 30px; /* Agrandado */
+    gap: 18px; 
+    margin-bottom: 30px; 
 }
 
 .led {
-    width: 20px; /* Agrandado */
-    height: 20px; /* Agrandado */
+    width: 20px; 
+    height: 20px; 
     border-radius: 50%;
     background: #fff;
     position: relative;
@@ -101,18 +101,17 @@ body{
     100% { background: #e2cfea; box-shadow: 0 0 2px #e2cfea; }
 }
 
-/* TEXTOS MÁS GRANDES */
 h1{
     color:#ff4d6d;
     margin-bottom:25px;
-    font-size:2.6rem; /* Agrandado */
+    font-size:2.6rem; 
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 p{
     color:#555;
-    font-size:1.4rem; /* Agrandado */
+    font-size:1.4rem; 
     line-height:1.7;
     font-weight: 400;
 }
@@ -121,17 +120,16 @@ p{
     display:flex;
     justify-content:center;
     align-items: center;
-    gap:30px; /* Agrandado */
-    margin-top:40px; /* Agrandado */
+    gap:30px; 
+    margin-top:40px; 
     min-height: 100px;
 }
 
-/* BOTONES MÁS GRANDES */
 button{
     border:none;
     border-radius:50px;
-    padding:20px 45px; /* Agrandado */
-    font-size:1.5rem; /* Agrandado */
+    padding:20px 45px; 
+    font-size:1.5rem; 
     font-weight: 600;
     cursor:pointer;
     color:white;
@@ -204,23 +202,60 @@ button::after {
     z-index:999;
 }
 
-/* TEXTOS PANTALLA FINAL MÁS GRANDES */
 #pantallaFinal h1 {
-    font-size: 3.0 rem; /* Agrandado */
+    font-size: 3.2rem; 
     animation: pulsoTexto 1s infinite alternate;
 }
 
 #pantallaFinal p {
-    font-size: 1.6rem; /* Agrandado */
+    font-size: 1.6rem; 
 }
 
 @keyframes pulsoTexto {
     0% { text-shadow: 0 0 10px rgba(255,77,109,0.5); }
     100% { text-shadow: 0 0 25px #fff, 0 0 40px #ff4d6d; }
 }
+
+/* PANTALLA ANTI-CELULAR */
+#bloqueoCelular {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+    display: none; /* Se activa con JS si es celular */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+#bloqueoCelular .contenedor {
+    background: #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: aparecer 0.5s ease-out forwards;
+}
+
+#bloqueoCelular h1 {
+    color: #ffbe0b;
+    font-size: 2.2rem;
+}
+
+#bloqueoCelular p {
+    color: #ddd;
+    font-size: 1.3rem;
+}
 </style>
 </head>
 <body>
+
+<div id="bloqueoCelular">
+    <div class="contenedor">
+        <h1>⚠️ Aviso importante</h1>
+        <p>
+            Esta página tiene elementos gráficos pesados que <b>no son compatibles con teléfonos celulares.</b><br><br>
+            💻 Por favor, <b>abrila desde una computadora</b> para poder verla correctamente.
+        </p>
+    </div>
+</div>
 
 <div class="contenedor" id="cajaPrincipal">
     <div class="guirnalda-luces">
@@ -237,7 +272,7 @@ button::after {
     <h1>❤️ ¿Querés ir al cine conmigo a ver Obsesión? 🍿</h1>
 
     <p>
-        Hola me llamo dudu y quiero invitarla a usted bubu<br><br>
+        🥺 Tengo una invitación para vos.<br><br>
         ❤️ Te espero en mi casa a las 6:00 PM ❤️<br>
         🍿 Y después vamos juntos al cine 🍿
     </p>
@@ -261,13 +296,30 @@ button::after {
             <div class="led"></div>
         </div>
         <h1>🥰 ¡PLAN CONFIRMADO!</h1>
-        <p>🍿 Te espero en mi casa a las 6:00 PM 🍿</p>
-        <p>❤️ mandame captura al whatsapp ❤️</p>
+        <p>❤️ Te espero en mi casa a las 6:00 PM ❤️</p>
+        <p>🍿 Después vamos a ver Obsesión juntos 🍿</p>
         <p>✨ Sabía que ibas a decir que sí ✨</p>
     </div>
 </div>
 
 <script>
+// DETECTOR DE DISPOSITIVOS
+function detectarCelular() {
+    // Comprueba si el dispositivo de entrada es tactil (celular/tablet) o si la pantalla es menor a 800px
+    const esMovil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const pantallaChica = window.innerWidth <= 800;
+    
+    return esMovil || pantallaChica;
+}
+
+// Lógica inicial para mostrar/ocultar según el dispositivo
+if(detectarCelular()) {
+    document.getElementById("bloqueoCelular").style.display = "flex";
+} else {
+    document.getElementById("cajaPrincipal").style.display = "block";
+}
+
+// Lógica de los botones
 const botonNo = document.getElementById("no");
 const botonSi = document.getElementById("si");
 const cajaPrincipal = document.getElementById("cajaPrincipal");
@@ -311,7 +363,6 @@ function escapar(e){
 }
 
 botonNo.addEventListener("mouseover", escapar);
-botonNo.addEventListener("touchstart", escapar);
 botonNo.addEventListener("click", escapar);
 
 botonSi.addEventListener("click", () => {
@@ -328,7 +379,7 @@ function crearCorazon(){
     corazon.innerHTML = "❤️";
 
     corazon.style.left = Math.random() * 100 + "vw";
-    corazon.style.fontSize = (Math.random() * 40 + 20) + "px"; // Corazones de fondo un poco más grandes
+    corazon.style.fontSize = (Math.random() * 40 + 20) + "px"; 
     corazon.style.animationDuration = (Math.random() * 2 + 2) + "s";
 
     document.body.appendChild(corazon);
@@ -338,7 +389,9 @@ function crearCorazon(){
     }, 5000);
 }
 
-setInterval(crearCorazon, 600);
+if(!detectarCelular()){
+    setInterval(crearCorazon, 600);
+}
 </script>
 
 </body>
