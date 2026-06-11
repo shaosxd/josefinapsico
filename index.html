@@ -28,6 +28,7 @@ body{
 /* Identificador para que JavaScript detecte los bordes del cuadrado */
 #cajaPrincipal {
     position: relative;
+    z-index: 10;
 }
 
 .contenedor{
@@ -38,7 +39,6 @@ body{
     max-width:600px;
     width:100%;
     box-shadow:0 20px 50px rgba(0,0,0,0.2);
-    z-index:10;
     animation: aparecer 0.8s ease-out forwards;
 }
 
@@ -103,7 +103,7 @@ button:hover {
 #no{
     background:#6c757d;
     position: relative;
-    z-index: 1000; /* Asegura que quede por encima de los corazones */
+    z-index: 1000;
 }
 
 .corazon{
@@ -129,7 +129,7 @@ button:hover {
     position:fixed;
     inset:0;
     background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    display:none; /* Se cambia a flex con JS */
+    display:none;
     justify-content:center;
     align-items:center;
     padding:20px;
@@ -137,7 +137,6 @@ button:hover {
     animation: aparecer 0.5s ease-out forwards;
 }
 
-/* Ajustes mínimos para que el título de la pantalla final resalte más adentro del cuadro blanco */
 #pantallaFinal h1 {
     font-size: 2.8rem;
 }
@@ -182,35 +181,73 @@ function escapar(e){
 
     intentos++;
 
-    // Límites de la ventana y dimensiones del botón
     const btnAncho = botonNo.offsetWidth;
     const btnAlto = botonNo.offsetHeight;
     const anchoVentana = window.innerWidth;
     const altoVentana = window.innerHeight;
 
-    // Detectamos dónde está ubicado el cuadrado del centro
+    // Detectamos los bordes exactos del cuadrado del centro
     const rectCaja = cajaPrincipal.getBoundingClientRect();
-    const paddingCaja = 25; // Distancia mínima para que no pise el borde del cuadrado
+    
+    // Array para guardar los espacios disponibles en la pantalla
+    const zonasSeguras = [];
+    const margen = 20; // Espacio para que respire y no quede pegado
+
+    // Verificamos si hay espacio arriba del cuadrado
+    if (rectCaja.top > btnAlto + margen) {
+        zonasSeguras.push({
+            minX: margen, 
+            maxX: anchoVentana - btnAncho - margen,
+            minY: margen, 
+            maxY: rectCaja.top - btnAlto - margen
+        });
+    }
+    // Verificamos si hay espacio abajo
+    if (altoVentana - rectCaja.bottom > btnAlto + margen) {
+        zonasSeguras.push({
+            minX: margen, 
+            maxX: anchoVentana - btnAncho - margen,
+            minY: rectCaja.bottom + margen, 
+            maxY: altoVentana - btnAlto - margen
+        });
+    }
+    // Verificamos si hay espacio a la izquierda
+    if (rectCaja.left > btnAncho + margen) {
+        zonasSeguras.push({
+            minX: margen, 
+            maxX: rectCaja.left - btnAncho - margen,
+            minY: margen, 
+            maxY: altoVentana - btnAlto - margen
+        });
+    }
+    // Verificamos si hay espacio a la derecha
+    if (anchoVentana - rectCaja.right > btnAncho + margen) {
+        zonasSeguras.push({
+            minX: rectCaja.right + margen, 
+            maxX: anchoVentana - btnAncho - margen,
+            minY: margen, 
+            maxY: altoVentana - btnAlto - margen
+        });
+    }
 
     let nuevoX, nuevoY;
-    let solapa = true;
-    let intentosLoop = 0;
 
-    // Busca un espacio libre (máximo 100 intentos por si la pantalla es muy chica)
-    while (solapa && intentosLoop < 100) {
-        // Genera coordenadas aleatorias, pero respeta 20px de margen respecto a la pantalla
-        nuevoX = 20 + Math.random() * (anchoVentana - btnAncho - 40);
-        nuevoY = 20 + Math.random() * (altoVentana - btnAlto - 40);
-
-        // Verifica si esas coordenadas chocan con el cuadrado blanco
-        const chocaX = (nuevoX + btnAncho > rectCaja.left - paddingCaja) && (nuevoX < rectCaja.right + paddingCaja);
-        const chocaY = (nuevoY + btnAlto > rectCaja.top - paddingCaja) && (nuevoY < rectCaja.bottom + paddingCaja);
-
-        if (!(chocaX && chocaY)) {
-            solapa = false; // Encontró un espacio válido
-        }
-        intentosLoop++;
+    // Si hay zonas seguras, elegimos una al azar
+    if (zonasSeguras.length > 0) {
+        const zonaElegida = zonasSeguras[Math.floor(Math.random() * zonasSeguras.length)];
+        nuevoX = zonaElegida.minX + Math.random() * (zonaElegida.maxX - zonaElegida.minX);
+        nuevoY = zonaElegida.minY + Math.random() * (zonaElegida.maxY - zonaElegida.minY);
+    } else {
+        // Si la pantalla es muy chica (ej. celular) y la caja ocupa todo, 
+        // lo movemos a cualquier lado pero dentro de la pantalla
+        nuevoX = margen + Math.random() * (anchoVentana - btnAncho - margen * 2);
+        nuevoY = margen + Math.random() * (altoVentana - btnAlto - margen * 2);
     }
+
+    // CANDADO DE SEGURIDAD EXTREMA: 
+    // Obligamos matemáticamente a que las coordenadas nunca superen el tamaño de la ventana
+    nuevoX = Math.max(10, Math.min(nuevoX, anchoVentana - btnAncho - 10));
+    nuevoY = Math.max(10, Math.min(nuevoY, altoVentana - btnAlto - 10));
 
     botonNo.style.position = "fixed";
     botonNo.style.left = nuevoX + "px";
