@@ -25,9 +25,9 @@ body{
     padding:20px;
 }
 
-/* Identificador para que JavaScript detecte los bordes del cuadrado */
+/* El cuadrado blanco ahora es la "jaula" del botón */
 #cajaPrincipal {
-    position: relative;
+    position: relative; 
     z-index: 10;
 }
 
@@ -181,75 +181,22 @@ function escapar(e){
 
     intentos++;
 
-    const btnAncho = botonNo.offsetWidth;
-    const btnAlto = botonNo.offsetHeight;
-    const anchoVentana = window.innerWidth;
-    const altoVentana = window.innerHeight;
+    // Tomamos las medidas del cuadrado blanco y del botón
+    const anchoCaja = cajaPrincipal.offsetWidth;
+    const altoCaja = cajaPrincipal.offsetHeight;
+    const anchoBtn = botonNo.offsetWidth;
+    const altoBtn = botonNo.offsetHeight;
 
-    // Detectamos los bordes exactos del cuadrado del centro
-    const rectCaja = cajaPrincipal.getBoundingClientRect();
-    
-    // Array para guardar los espacios disponibles en la pantalla
-    const zonasSeguras = [];
-    const margen = 20; // Espacio para que respire y no quede pegado
+    // Calculamos un punto al azar DENTRO del cuadrado blanco
+    // Restamos el tamaño del botón y dejamos 15px de margen para que no muerda el borde
+    const maxX = anchoCaja - anchoBtn - 15;
+    const maxY = altoCaja - altoBtn - 15;
 
-    // Verificamos si hay espacio arriba del cuadrado
-    if (rectCaja.top > btnAlto + margen) {
-        zonasSeguras.push({
-            minX: margen, 
-            maxX: anchoVentana - btnAncho - margen,
-            minY: margen, 
-            maxY: rectCaja.top - btnAlto - margen
-        });
-    }
-    // Verificamos si hay espacio abajo
-    if (altoVentana - rectCaja.bottom > btnAlto + margen) {
-        zonasSeguras.push({
-            minX: margen, 
-            maxX: anchoVentana - btnAncho - margen,
-            minY: rectCaja.bottom + margen, 
-            maxY: altoVentana - btnAlto - margen
-        });
-    }
-    // Verificamos si hay espacio a la izquierda
-    if (rectCaja.left > btnAncho + margen) {
-        zonasSeguras.push({
-            minX: margen, 
-            maxX: rectCaja.left - btnAncho - margen,
-            minY: margen, 
-            maxY: altoVentana - btnAlto - margen
-        });
-    }
-    // Verificamos si hay espacio a la derecha
-    if (anchoVentana - rectCaja.right > btnAncho + margen) {
-        zonasSeguras.push({
-            minX: rectCaja.right + margen, 
-            maxX: anchoVentana - btnAncho - margen,
-            minY: margen, 
-            maxY: altoVentana - btnAlto - margen
-        });
-    }
+    const nuevoX = 15 + Math.random() * (maxX - 15);
+    const nuevoY = 15 + Math.random() * (maxY - 15);
 
-    let nuevoX, nuevoY;
-
-    // Si hay zonas seguras, elegimos una al azar
-    if (zonasSeguras.length > 0) {
-        const zonaElegida = zonasSeguras[Math.floor(Math.random() * zonasSeguras.length)];
-        nuevoX = zonaElegida.minX + Math.random() * (zonaElegida.maxX - zonaElegida.minX);
-        nuevoY = zonaElegida.minY + Math.random() * (zonaElegida.maxY - zonaElegida.minY);
-    } else {
-        // Si la pantalla es muy chica (ej. celular) y la caja ocupa todo, 
-        // lo movemos a cualquier lado pero dentro de la pantalla
-        nuevoX = margen + Math.random() * (anchoVentana - btnAncho - margen * 2);
-        nuevoY = margen + Math.random() * (altoVentana - btnAlto - margen * 2);
-    }
-
-    // CANDADO DE SEGURIDAD EXTREMA: 
-    // Obligamos matemáticamente a que las coordenadas nunca superen el tamaño de la ventana
-    nuevoX = Math.max(10, Math.min(nuevoX, anchoVentana - btnAncho - 10));
-    nuevoY = Math.max(10, Math.min(nuevoY, altoVentana - btnAlto - 10));
-
-    botonNo.style.position = "fixed";
+    // Lo pasamos a absolute para que se mueva en relación al cuadrado, no a la pantalla
+    botonNo.style.position = "absolute";
     botonNo.style.left = nuevoX + "px";
     botonNo.style.top = nuevoY + "px";
     botonNo.style.transition = "all 0.2s ease";
