@@ -20,7 +20,6 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    /* Fondo con luces de gradiente animadas */
     background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ff758c, #ff7eb3);
     background-size: 400% 400%;
     animation: fondoLuces 10s ease infinite;
@@ -39,22 +38,20 @@ body{
     z-index: 10;
 }
 
-/* EL CUADRADO CON LUCES DE NEÓN */
+/* EL CUADRADO: Más ancho y con más espacio adentro */
 .contenedor{
     background: rgba(255, 255, 255, 0.96);
-    padding: 40px 30px;
+    padding: 50px 40px; /* Agrandado */
     border-radius:30px;
     text-align:center;
-    max-width:550px;
+    max-width:700px; /* Agrandado */
     width:100%;
-    /* Aura de luces dinámicas alrededor del cuadro */
     box-shadow: 0 0 20px rgba(255, 77, 109, 0.4), 
                 0 0 40px rgba(255, 117, 140, 0.2), 
                 0 20px 50px rgba(0,0,0,0.15);
     animation: aparecer 0.8s ease-out forwards, lucesAura 4s linear infinite alternate;
 }
 
-/* Animación del aura de luces del contenedor */
 @keyframes lucesAura {
     0% { box-shadow: 0 0 20px #ff4d6d, 0 0 40px rgba(255,77,109,0.3), 0 20px 50px rgba(0,0,0,0.15); }
     50% { box-shadow: 0 0 30px #ffbe0b, 0 0 60px rgba(255,190,11,0.3), 0 20px 50px rgba(0,0,0,0.15); }
@@ -66,57 +63,57 @@ body{
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* GUIRNALDA DE LUCES LED */
+/* GUIRNALDA DE LUCES: Focos más grandes */
 .guirnalda-luces {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 18px; /* Agrandado */
+    margin-bottom: 30px; /* Agrandado */
 }
 
 .led {
-    width: 14px;
-    height: 14px;
+    width: 20px; /* Agrandado */
+    height: 20px; /* Agrandado */
     border-radius: 50%;
     background: #fff;
     position: relative;
 }
 
-/* Configuración de parpadeo de las luces individuales */
 .led:nth-child(4n+1) { animation: ledRosa 0.6s infinite alternate; }
 .led:nth-child(4n+2) { animation: ledAmarillo 0.8s infinite alternate 0.2s; }
 .led:nth-child(4n+3) { animation: ledCian 0.5s infinite alternate 0.4s; }
 .led:nth-child(4n+4) { animation: ledMorado 0.7s infinite alternate 0.1s; }
 
 @keyframes ledRosa {
-    0% { background: #ff4d6d; box-shadow: 0 0 5px #ff4d6d, 0 0 15px #ff4d6d; }
-    100% { background: #ffb3c1; box-shadow: 0 0 1px #ffb3c1; }
+    0% { background: #ff4d6d; box-shadow: 0 0 6px #ff4d6d, 0 0 18px #ff4d6d; }
+    100% { background: #ffb3c1; box-shadow: 0 0 2px #ffb3c1; }
 }
 @keyframes ledAmarillo {
-    0% { background: #ffbe0b; box-shadow: 0 0 5px #ffbe0b, 0 0 15px #ffbe0b; }
-    100% { background: #fff3b0; box-shadow: 0 0 1px #fff3b0; }
+    0% { background: #ffbe0b; box-shadow: 0 0 6px #ffbe0b, 0 0 18px #ffbe0b; }
+    100% { background: #fff3b0; box-shadow: 0 0 2px #fff3b0; }
 }
 @keyframes ledCian {
-    0% { background: #00f5d4; box-shadow: 0 0 5px #00f5d4, 0 0 15px #00f5d4; }
-    100% { background: #ccfffa; box-shadow: 0 0 1px #ccfffa; }
+    0% { background: #00f5d4; box-shadow: 0 0 6px #00f5d4, 0 0 18px #00f5d4; }
+    100% { background: #ccfffa; box-shadow: 0 0 2px #ccfffa; }
 }
 @keyframes ledMorado {
-    0% { background: #9b5de5; box-shadow: 0 0 5px #9b5de5, 0 0 15px #9b5de5; }
-    100% { background: #e2cfea; box-shadow: 0 0 1px #e2cfea; }
+    0% { background: #9b5de5; box-shadow: 0 0 6px #9b5de5, 0 0 18px #9b5de5; }
+    100% { background: #e2cfea; box-shadow: 0 0 2px #e2cfea; }
 }
 
+/* TEXTOS MÁS GRANDES */
 h1{
     color:#ff4d6d;
-    margin-bottom:20px;
-    font-size:2.1rem;
+    margin-bottom:25px;
+    font-size:2.6rem; /* Agrandado */
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 p{
     color:#555;
-    font-size:1.15rem;
-    line-height:1.6;
+    font-size:1.4rem; /* Agrandado */
+    line-height:1.7;
     font-weight: 400;
 }
 
@@ -124,27 +121,26 @@ p{
     display:flex;
     justify-content:center;
     align-items: center;
-    gap:25px;
-    margin-top:35px;
-    min-height: 90px;
+    gap:30px; /* Agrandado */
+    margin-top:40px; /* Agrandado */
+    min-height: 100px;
 }
 
-/* BOTONES CON EFECTO DE LUZ ULTRA-PRO */
+/* BOTONES MÁS GRANDES */
 button{
     border:none;
     border-radius:50px;
-    padding:16px 38px;
-    font-size:1.25rem;
+    padding:20px 45px; /* Agrandado */
+    font-size:1.5rem; /* Agrandado */
     font-weight: 600;
     cursor:pointer;
     color:white;
     position: relative;
-    overflow: hidden; /* Corta el reflejo láser para que no se salga del botón */
+    overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* El destello de luz láser (Efecto Shimmer) */
 button::after {
     content: '';
     position: absolute;
@@ -184,7 +180,6 @@ button::after {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* EFECTOS FINALES */
 .corazon{
     position:fixed;
     bottom:-50px;
@@ -209,9 +204,14 @@ button::after {
     z-index:999;
 }
 
+/* TEXTOS PANTALLA FINAL MÁS GRANDES */
 #pantallaFinal h1 {
-    font-size: 2.6rem;
+    font-size: 3.2rem; /* Agrandado */
     animation: pulsoTexto 1s infinite alternate;
+}
+
+#pantallaFinal p {
+    font-size: 1.6rem; /* Agrandado */
 }
 
 @keyframes pulsoTexto {
@@ -280,28 +280,23 @@ function escapar(e){
 
     intentos++;
 
-    // Medidas precisas de la "jaula" (cuadrado blanco) y del botón
     const anchoCaja = cajaPrincipal.offsetWidth;
     const altoCaja = cajaPrincipal.offsetHeight;
     const anchoBtn = botonNo.offsetWidth;
     const altoBtn = botonNo.offsetHeight;
 
-    // Límites máximos seguros restando el tamaño del botón y un margen de 20px
     const maxX = anchoCaja - anchoBtn - 20;
     const maxY = altoCaja - altoBtn - 20;
 
-    // Genera coordenadas aleatorias internas perfectas
     const nuevoX = 20 + Math.random() * (maxX - 20);
     const nuevoY = 20 + Math.random() * (maxY - 20);
 
-    // Se posiciona de forma absoluta respecto al cuadro contenedor
     botonNo.style.position = "absolute";
     botonNo.style.left = nuevoX + "px";
     botonNo.style.top = nuevoY + "px";
     botonNo.style.zIndex = "1000";
-    botonNo.style.transition = "all 0.15s ease-out"; // Un toque más rápido para que sea desafiante
+    botonNo.style.transition = "all 0.15s ease-out"; 
 
-    // El botón SÍ crece de tamaño
     botonSi.style.animation = "none";
     escala += 0.15;
     botonSi.style.transform = `scale(${escala})`;
@@ -315,16 +310,13 @@ function escapar(e){
     }
 }
 
-// Eventos para atrapar cualquier intento de click o roce
 botonNo.addEventListener("mouseover", escapar);
 botonNo.addEventListener("touchstart", escapar);
 botonNo.addEventListener("click", escapar);
 
-// Acción ganadora
 botonSi.addEventListener("click", () => {
     document.getElementById("pantallaFinal").style.display = "flex";
 
-    // Explosión masiva inicial de corazones flotantes
     for(let i = 0; i < 150; i++){
         setTimeout(crearCorazon, i * 25);
     }
@@ -336,7 +328,7 @@ function crearCorazon(){
     corazon.innerHTML = "❤️";
 
     corazon.style.left = Math.random() * 100 + "vw";
-    corazon.style.fontSize = (Math.random() * 30 + 20) + "px";
+    corazon.style.fontSize = (Math.random() * 40 + 20) + "px"; // Corazones de fondo un poco más grandes
     corazon.style.animationDuration = (Math.random() * 2 + 2) + "s";
 
     document.body.appendChild(corazon);
@@ -346,7 +338,6 @@ function crearCorazon(){
     }, 5000);
 }
 
-// Lluvia constante de corazones ambiente de fondo
 setInterval(crearCorazon, 600);
 </script>
 
